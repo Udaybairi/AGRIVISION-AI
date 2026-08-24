@@ -20,7 +20,10 @@ from backend.config import (
 
 # Audio cache directory
 AUDIO_CACHE_DIR = DATA_DIR / "audio_cache"
-AUDIO_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    AUDIO_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+except (OSError, PermissionError):
+    pass
 
 # Curated High-Fidelity Premade Voices
 CURATED_VOICES = [

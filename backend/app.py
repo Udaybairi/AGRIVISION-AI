@@ -65,6 +65,7 @@ def home():
 # ============================================================================
 
 @app.route('/api/health', methods=['GET'])
+@app.route('/api/stats', methods=['GET'])
 def health_check():
     """System health check and status reporting."""
     return jsonify({
@@ -89,9 +90,7 @@ def rag_chat():
     Executes: Query Rewriting -> Multi-Query -> Routing -> Hybrid Search -> Reranking -> LLM -> Citations.
     """
     try:
-        data = request.get_json(silent=True, force=True) or {}
-        if not data and request.form:
-            data = request.form.to_dict()
+        data = request.get_json(silent=True) or (request.form.to_dict() if request.form else {}) or {}
         user_query = data.get("query", "").strip()
         custom_filters = data.get("filters", {})
 
@@ -111,7 +110,7 @@ def crop_recommendation_api():
     ML Crop Recommendation + Grounded RAG Evidence Synthesis.
     """
     try:
-        data = request.get_json() or {}
+        data = request.get_json(silent=True) or (request.form.to_dict() if request.form else {}) or {}
         
         # If form data was sent
         if not data and request.form:
@@ -175,7 +174,7 @@ def fertilizer_recommendation_api():
     Fertilizer & Soil Health Advisor with RAG Knowledge Verification.
     """
     try:
-        data = request.get_json() or {}
+        data = request.get_json(silent=True) or (request.form.to_dict() if request.form else {}) or {}
         if not data and request.form:
             data = {
                 "crop": request.form.get("crop", "Rice"),
@@ -267,8 +266,13 @@ def pest_detection_api():
     Pest AI: Identification & Integrated Pest Management (IPM).
     """
     try:
-        data = request.get_json() or {}
-        description = data.get("description", "").strip() or data.get("pest_name", "").strip()
+        data = request.get_json(silent=True) or (request.form.to_dict() if request.form else {}) or {}
+        description = (
+            data.get("description", "") or
+            data.get("pest_name", "") or
+            data.get("pest", "") or
+            data.get("query", "")
+        ).strip()
 
         if not description:
             return jsonify({"error": "Please provide a pest description or name"}), 400

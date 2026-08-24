@@ -8,12 +8,20 @@ import time
 import os
 import re
 from typing import Dict, Any, List, Optional
-from pydantic import Field
-
-from langchain_core.documents import Document
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+try:
+    from pydantic import Field
+    from langchain_core.documents import Document
+    from langchain_core.retrievers import BaseRetriever
+    from langchain_core.prompts import ChatPromptTemplate
+    from langchain_core.output_parsers import StrOutputParser
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    Field = None
+    Document = None
+    BaseRetriever = object
+    ChatPromptTemplate = None
+    StrOutputParser = None
+    LANGCHAIN_AVAILABLE = False
 
 from backend.config import (
     GEMINI_API_KEY, GEMINI_MODEL,

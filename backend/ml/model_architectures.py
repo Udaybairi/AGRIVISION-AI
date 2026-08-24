@@ -3,47 +3,58 @@ AGRIVISION AI - Neural Network Architectures
 PyTorch ResNet9 Architecture for Plant Disease Classification matching trained weights.
 """
 
-import torch
-import torch.nn as nn
+try:
+    import torch
+    import torch.nn as nn
+    _TORCH_AVAILABLE = True
+except ImportError:
+    torch = None
+    nn = None
+    _TORCH_AVAILABLE = False
 
 
-def ConvBlock(in_channels, out_channels, pool=False):
-    layers = [
-        nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
-        nn.BatchNorm2d(out_channels),
-        nn.ReLU(inplace=True)
-    ]
-    if pool:
-        layers.append(nn.MaxPool2d(4))
-    return nn.Sequential(*layers)
+if _TORCH_AVAILABLE:
+    def ConvBlock(in_channels, out_channels, pool=False):
+        layers = [
+            nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True)
+        ]
+        if pool:
+            layers.append(nn.MaxPool2d(4))
+        return nn.Sequential(*layers)
 
 
-class ResNet9(nn.Module):
-    """
-    9-layer Residual Convolutional Neural Network for Plant Leaf Disease Classification.
-    """
-    def __init__(self, in_channels: int = 3, num_diseases: int = 38):
-        super().__init__()
-        self.conv1 = ConvBlock(in_channels, 64)
-        self.conv2 = ConvBlock(64, 128, pool=True)  # out_dim : 128 x 64 x 64 for 256x256
-        self.res1 = nn.Sequential(ConvBlock(128, 128), ConvBlock(128, 128))
+    class ResNet9(nn.Module):
+        """
+        9-layer Residual Convolutional Neural Network for Plant Leaf Disease Classification.
+        """
+        def __init__(self, in_channels: int = 3, num_diseases: int = 38):
+            super().__init__()
+            self.conv1 = ConvBlock(in_channels, 64)
+            self.conv2 = ConvBlock(64, 128, pool=True)  # out_dim : 128 x 64 x 64 for 256x256
+            self.res1 = nn.Sequential(ConvBlock(128, 128), ConvBlock(128, 128))
 
-        self.conv3 = ConvBlock(128, 256, pool=True) # out_dim : 256 x 16 x 16
-        self.conv4 = ConvBlock(256, 512, pool=True) # out_dim : 512 x 4 x 4
-        self.res2 = nn.Sequential(ConvBlock(512, 512), ConvBlock(512, 512))
+            self.conv3 = ConvBlock(128, 256, pool=True) # out_dim : 256 x 16 x 16
+            self.conv4 = ConvBlock(256, 512, pool=True) # out_dim : 512 x 4 x 4
+            self.res2 = nn.Sequential(ConvBlock(512, 512), ConvBlock(512, 512))
 
-        self.classifier = nn.Sequential(
-            nn.MaxPool2d(4),
-            nn.Flatten(),
-            nn.Linear(512, num_diseases)
-        )
+            self.classifier = nn.Sequential(
+                nn.MaxPool2d(4),
+                nn.Flatten(),
+                nn.Linear(512, num_diseases)
+            )
 
-    def forward(self, xb):
-        out = self.conv1(xb)
-        out = self.conv2(out)
-        out = self.res1(out) + out
-        out = self.conv3(out)
-        out = self.conv4(out)
-        out = self.res2(out) + out
-        out = self.classifier(out)
-        return out
+        def forward(self, xb):
+            out = self.conv1(xb)
+            out = self.conv2(out)
+            out = self.res1(out) + out
+            out = self.conv3(out)
+            out = self.conv4(out)
+            out = self.res2(out) + out
+            out = self.classifier(out)
+            return out
+else:
+    class ResNet9:
+        def __init__(self, *args, **kwargs):
+            pass

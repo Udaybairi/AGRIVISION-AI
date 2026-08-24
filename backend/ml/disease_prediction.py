@@ -7,9 +7,17 @@ import io
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from PIL import Image
-import torch
-import torch.nn.functional as F
-from torchvision import transforms
+
+try:
+    import torch
+    import torch.nn.functional as F
+    from torchvision import transforms
+    TORCH_AVAILABLE = True
+except ImportError:
+    torch = None
+    F = None
+    transforms = None
+    TORCH_AVAILABLE = False
 
 from backend.config import DISEASE_MODEL_PATH
 from backend.ml.model_architectures import ResNet9
@@ -133,15 +141,21 @@ class DiseasePredictor:
         self.model_path = model_path or DISEASE_MODEL_PATH
         self.classes = DISEASE_CLASSES
         self.model: Optional[ResNet9] = None
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self._load_model()
-
-        self.transform = transforms.Compose([
-            transforms.Resize((256, 256)),
-            transforms.ToTensor(),
-        ])
+        if TORCH_AVAILABLE:
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.transform = transforms.Compose([
+                transforms.Resize((256, 256)),
+                transforms.ToTensor(),
+            ])
+            self._load_model()
+        else:
+            self.device = 'cpu'
+            self.transform = None
+            self.model = None
 
     def _load_model(self) -> None:
+        if not TORCH_AVAILABLE:
+            return
         try:
             if self.model_path.exists():
                 self.model = ResNet9(in_channels=3, num_diseases=len(self.classes))
@@ -181,8 +195,8 @@ class DiseasePredictor:
         """Runs inference on leaf image bytes and returns structured predictions."""
         image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
         
-        if self.model is None:
-            # Safe heuristic fallback if model weights are unavailable
+        if self.model is None or not TORCH_AVAILABLE:
+            # Safe heuristic fallback if model weights or PyTorch are unavailable
             parsed = self.parse_class_name(self.classes[0])
             return {
                 'crop': parsed['crop'],

@@ -1,0 +1,10 @@
+# Ignore legacy and development files from Vercel function bundle
+harvestify_src/
+tests/
+scripts/
+.pytest_cache/
+*.ipynb
+data/audio_cache/
+data/vector_store/
+.git/
+.vscode/
