@@ -370,18 +370,23 @@ def generate_specimen_svg(image_path: str) -> str:
 @app.route('/api/dataset-image/<path:image_path>', methods=['GET'])
 def get_dataset_image(image_path: str):
     """
-    Streams dataset images safely from local storage,
-    or redirects to high-resolution crop photography on remote cloud deployments.
+    Streams dataset images safely from bundled static dataset_images,
+    local storage, or redirects to high-resolution photography.
     """
     try:
+        # 1. Check in bundled static dataset_images
+        static_img_dir = (BASE_DIR / "frontend" / "static" / "dataset_images").resolve()
+        target_static = (static_img_dir / image_path).resolve()
+        if str(target_static).startswith(str(static_img_dir)) and target_static.exists():
+            return send_from_directory(target_static.parent, target_static.name)
+
+        # 2. Check in original dataset directory
         dataset_dir = Path(AGRICULTURE_DATASET_PATH).resolve()
         target_file = (dataset_dir / image_path).resolve()
-        
-        # If local dataset image file exists on disk, stream it
         if str(target_file).startswith(str(dataset_dir)) and target_file.exists():
             return send_from_directory(target_file.parent, target_file.name)
-        
-        # On Vercel / serverless: match against curated high-resolution photography
+
+        # 3. On Vercel / serverless: match against curated high-resolution photography
         from backend.rag.image_retriever import CURATED_AGRI_PHOTOS
         from flask import redirect, Response
 
