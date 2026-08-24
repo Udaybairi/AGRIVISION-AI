@@ -370,8 +370,8 @@ def generate_specimen_svg(image_path: str) -> str:
 @app.route('/api/dataset-image/<path:image_path>', methods=['GET'])
 def get_dataset_image(image_path: str):
     """
-    Streams dataset images safely from the Agriculture Dataset directory,
-    or generates an agronomic botanical SVG card on remote cloud deployments.
+    Streams dataset images safely from local storage,
+    or redirects to high-resolution crop photography on remote cloud deployments.
     """
     try:
         dataset_dir = Path(AGRICULTURE_DATASET_PATH).resolve()
@@ -381,8 +381,15 @@ def get_dataset_image(image_path: str):
         if str(target_file).startswith(str(dataset_dir)) and target_file.exists():
             return send_from_directory(target_file.parent, target_file.name)
         
-        # On Vercel / serverless deployments without local download folders, return dynamic SVG specimen
-        from flask import Response
+        # On Vercel / serverless: match against curated high-resolution photography
+        from backend.rag.image_retriever import CURATED_AGRI_PHOTOS
+        from flask import redirect, Response
+
+        lower_path = image_path.lower()
+        for key, photos in CURATED_AGRI_PHOTOS.items():
+            if key in lower_path and photos:
+                return redirect(photos[0]["url"], code=302)
+
         svg_card = generate_specimen_svg(image_path)
         return Response(svg_card, mimetype='image/svg+xml')
     except Exception as e:
