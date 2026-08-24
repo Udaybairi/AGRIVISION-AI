@@ -1,7 +1,7 @@
 """
 AGRIVISION AI - Visual Disease & Pest Image Indexer and Retriever
 Scans the Agriculture Dataset directory tree, catalogs images of crop diseases, pests,
-and botanical specimens, and provides semantic, fuzzy, and high-resolution photographic image retrieval.
+and botanical specimens, and provides semantic and fuzzy image retrieval for the AI Assistant.
 """
 
 import os
@@ -13,205 +13,8 @@ from typing import List, Dict, Any, Optional
 from backend.config import AGRICULTURE_DATASET_PATH, PROCESSED_DIR
 
 
-# Curated high-resolution agricultural photographic references (for cloud & production)
-CURATED_AGRI_PHOTOS: Dict[str, List[Dict[str, str]]] = {
-    "cotton": [
-        {
-            "label": "Cotton Boll Specimen",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1594488554271-e0e648c66e2c?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Cotton Field Plantation",
-            "category": "Cultivation Field",
-            "url": "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Cotton Leaf Foliage",
-            "category": "Botanical Diagnostic",
-            "url": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Bollworm & Pest Sentinel",
-            "category": "Pest Management",
-            "url": "https://images.unsplash.com/photo-1585250004683-4f65a88a745e?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "rice": [
-        {
-            "label": "Rice Paddy Field",
-            "category": "Cultivation Field",
-            "url": "https://images.unsplash.com/photo-1536657464919-892534f60d6e?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Golden Grain Ears",
-            "category": "Harvest Reference",
-            "url": "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Rice Stem & Leaf Health",
-            "category": "Agronomic Diagnostic",
-            "url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "wheat": [
-        {
-            "label": "Golden Wheat Canopy",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Wheat Field Ecology",
-            "category": "Cultivation Field",
-            "url": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "tomato": [
-        {
-            "label": "Vine Tomatoes & Leaf Canopy",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Tomato Plant Diagnostic",
-            "category": "Botanical Diagnostic",
-            "url": "https://images.unsplash.com/photo-1546470427-e26264be0b11?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Early Blight & Foliar Symptoms",
-            "category": "Disease Diagnostic",
-            "url": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "maize": [
-        {
-            "label": "Corn Ear on Stalk",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            "label": "Maize Canopy Field",
-            "category": "Cultivation Field",
-            "url": "https://images.unsplash.com/photo-1597916829826-02e5bb4a54e0?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "corn": [
-        {
-            "label": "Corn Ear on Stalk",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "potato": [
-        {
-            "label": "Potato Foliage & Harvest",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "banana": [
-        {
-            "label": "Banana Plantation Tree",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "mango": [
-        {
-            "label": "Mango Orchard Canopy",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "grapes": [
-        {
-            "label": "Vineyard Grapes",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "apple": [
-        {
-            "label": "Apple Orchard Trees",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "orange": [
-        {
-            "label": "Citrus Grove",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "coffee": [
-        {
-            "label": "Coffee Cherries & Foliage",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "papaya": [
-        {
-            "label": "Papaya Tree & Fruit",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1517282009859-f000ec3b26fe?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "watermelon": [
-        {
-            "label": "Watermelon Crop",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "pomegranate": [
-        {
-            "label": "Pomegranate Tree",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "coconut": [
-        {
-            "label": "Coconut Palm Grove",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "pepper": [
-        {
-            "label": "Bell Pepper Plants",
-            "category": "Crop Specimen",
-            "url": "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "aphid": [
-        {
-            "label": "Aphid Pest Colony",
-            "category": "Pest Specimen",
-            "url": "https://images.unsplash.com/photo-1585250004683-4f65a88a745e?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "pest": [
-        {
-            "label": "Insect Pest Macro",
-            "category": "Pest Specimen",
-            "url": "https://images.unsplash.com/photo-1585250004683-4f65a88a745e?auto=format&fit=crop&w=800&q=80"
-        }
-    ],
-    "caterpillar": [
-        {
-            "label": "Foliar Caterpillar",
-            "category": "Pest Specimen",
-            "url": "https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?auto=format&fit=crop&w=800&q=80"
-        }
-    ]
-}
-
-
 class ImageRetriever:
-    """Indexes and retrieves disease and pest reference images from dataset folders or curated CDNs."""
+    """Indexes and retrieves disease and pest reference images from dataset folders."""
 
     IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.bmp'}
 
@@ -231,9 +34,11 @@ class ImageRetriever:
         """Scans the dataset directory and creates an index of all images."""
         catalog = []
         if not self.dataset_root or not self.dataset_root.exists():
+            print(f"[ImageRetriever] Dataset path not found: {self.dataset_root}")
             return catalog
 
         try:
+            # Walk directory tree
             for root, _, files in os.walk(str(self.dataset_root)):
                 root_path = Path(root)
                 rel_dir = root_path.relative_to(self.dataset_root)
@@ -245,6 +50,7 @@ class ImageRetriever:
                         full_path = root_path / file
                         rel_path = full_path.relative_to(self.dataset_root).as_posix()
 
+                        # Determine category and entities from directory path
                         lower_parts = [p.lower() for p in dir_parts]
                         category = "Crop"
                         if any("pest" in p for p in lower_parts):
@@ -252,6 +58,7 @@ class ImageRetriever:
                         elif any("disease" in p or "blight" in p or "rot" in p or "spot" in p or "rust" in p or "mildew" in p for p in lower_parts):
                             category = "Disease"
 
+                        # Extract label
                         label = dir_parts[-1] if dir_parts else Path(file).stem
                         label_clean = self._normalize_name(label)
 
@@ -264,6 +71,8 @@ class ImageRetriever:
                             "label": label_clean,
                             "path_keywords": " ".join(dir_parts).lower() + " " + Path(file).stem.lower()
                         })
+
+            print(f"[ImageRetriever] Cataloged {len(catalog)} images from {self.dataset_root}")
             self.images = catalog
             self._save_catalog()
         except Exception as e:
@@ -287,9 +96,10 @@ class ImageRetriever:
                 with open(self.catalog_file, "r", encoding="utf-8") as f:
                     self.images = json.load(f)
                 if self.images:
+                    print(f"[ImageRetriever] Loaded {len(self.images)} images from catalog cache.")
                     return
             except Exception as e:
-                print(f"[ImageRetriever] Could not load image catalog: {e}")
+                print(f"[ImageRetriever] Error loading image catalog cache: {e}")
 
         self.build_catalog()
 
@@ -303,30 +113,14 @@ class ImageRetriever:
     ) -> List[Dict[str, Any]]:
         """
         Retrieves visual reference images matching crop, disease, or pest query keywords.
-        Guarantees diverse, high-resolution photographic images without duplicates.
         """
-        target_entity = (crop or pest or disease or "").lower().strip()
-        q_lower = query.lower()
-
-        # 1. Check curated high-resolution photo dictionary first for photographic quality
-        for key, photos in CURATED_AGRI_PHOTOS.items():
-            if key in target_entity or key in q_lower or (crop and key in crop.lower()) or (pest and key in pest.lower()):
-                results = []
-                for idx, photo in enumerate(photos[:top_k]):
-                    results.append({
-                        "id": f"curated_{key}_{idx}",
-                        "label": photo["label"],
-                        "category": photo["category"],
-                        "image_url": photo["url"],
-                        "relative_path": f"curated/{key}/{idx}",
-                        "score": 10
-                    })
-                return results
-
         if not self.images:
             return []
 
         search_terms = set()
+        q_lower = query.lower()
+        
+        # Add query tokens (filtered)
         STOPWORDS = {
             'what', 'how', 'the', 'and', 'for', 'are', 'is', 'can', 'with', 'from',
             'disease', 'pest', 'plant', 'plants', 'crop', 'crops', 'low', 'money',
@@ -338,10 +132,19 @@ class ImageRetriever:
 
         if crop:
             search_terms.add(crop.lower())
+            for part in crop.lower().split():
+                if part not in STOPWORDS:
+                    search_terms.add(part)
         if disease:
             search_terms.add(disease.lower())
+            for part in disease.lower().split():
+                if part not in STOPWORDS:
+                    search_terms.add(part)
         if pest:
             search_terms.add(pest.lower())
+            for part in pest.lower().split():
+                if part not in STOPWORDS:
+                    search_terms.add(part)
 
         if not search_terms:
             return []
@@ -351,12 +154,15 @@ class ImageRetriever:
             keywords = img.get("path_keywords", "")
             score = 0
 
+            # Check matching keywords
             for term in search_terms:
                 if term in keywords:
                     score += 2
+                    # Exact directory label match bonus
                     if term in img.get("label", "").lower():
                         score += 3
 
+            # Exact disease or pest bonus
             if disease and disease.lower() in keywords:
                 score += 5
             if pest and pest.lower() in keywords:
@@ -367,27 +173,25 @@ class ImageRetriever:
             if score > 0:
                 scored_images.append((score, img))
 
+        # Sort by score descending
         scored_images.sort(key=lambda x: x[0], reverse=True)
 
         results = []
-        seen_dirs = set()
+        seen_labels = set()
         for score, img in scored_images:
+            # Pick a diverse set of representative images
             rel_path = img.get("relative_path", "")
-            # Deduplicate by parent directory so we get diverse visual specimens
-            parent_dir = str(Path(rel_path).parent)
-            if parent_dir in seen_dirs and len(seen_dirs) < len(scored_images):
-                continue
-            seen_dirs.add(parent_dir)
-
             url = f"/api/dataset-image/{rel_path}"
-            results.append({
+            
+            item = {
                 "id": img.get("id"),
                 "label": img.get("label"),
                 "category": img.get("category"),
                 "image_url": url,
                 "relative_path": rel_path,
                 "score": score
-            })
+            }
+            results.append(item)
             if len(results) >= top_k:
                 break
 

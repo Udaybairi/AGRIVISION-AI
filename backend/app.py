@@ -316,92 +316,23 @@ def observability_api():
     })
 
 
-def generate_specimen_svg(image_path: str) -> str:
-    """Generates an aesthetic SVG botanical card for remote serverless environments."""
-    parts = [p.replace('_', ' ').replace('-', ' ').strip() for p in Path(image_path).parts if p]
-    label = parts[-2] if len(parts) >= 2 else (parts[0] if parts else "Agricultural Specimen")
-    import re
-    label_clean = re.sub(r'\(.*?\)', '', label).title().strip()
-    accent_color = "#10b981"
-    bg_gradient_start = "#062319"
-    bg_gradient_end = "#02120c"
-    category = "Botanical Specimen"
-    icon_svg = '<path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5c0 3.5 2.5 6.5 6 6.5 2 0 3.5-.8 4.5-1.5 3-2 4.5-5 4.5-10.5z" fill="#10b981"/>'
-
-    lower_path = image_path.lower()
-    if "pest" in lower_path:
-        category = "Pest Specimen"
-        accent_color = "#f59e0b"
-        bg_gradient_start = "#221706"
-        bg_gradient_end = "#0e0802"
-        icon_svg = '<path d="M12 2a4 4 0 0 1 4 4v1a4 4 0 0 1 4 4v2a2 2 0 0 1-2 2h-1v2a5 5 0 0 1-10 0v-2H6a2 2 0 0 1-2-2v-2a4 4 0 0 1 4-4V6a4 4 0 0 1 4-4zm-2 15a3 3 0 0 0 4 0v-2h-4v2zm5-7a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v2h6v-2z" fill="#f59e0b"/>'
-    elif any(d in lower_path for d in ["disease", "blight", "rot", "spot", "rust", "mildew", "virus", "scab"]):
-        category = "Disease Diagnostic"
-        accent_color = "#ef4444"
-        bg_gradient_start = "#260c0e"
-        bg_gradient_end = "#100406"
-        icon_svg = '<path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" fill="#ef4444"/>'
-
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="{bg_gradient_start}" />
-      <stop offset="100%" stop-color="{bg_gradient_end}" />
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="{accent_color}" stop-opacity="0.2" />
-      <stop offset="100%" stop-color="{accent_color}" stop-opacity="0" />
-    </radialGradient>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#bg)" />
-  <rect width="100%" height="100%" fill="url(#glow)" />
-  <rect x="8" y="8" width="384" height="284" rx="12" fill="none" stroke="{accent_color}" stroke-opacity="0.3" stroke-width="1.5" />
-  <g transform="translate(185, 65) scale(1.3)">{icon_svg}</g>
-  <rect x="20" y="20" width="130" height="22" rx="4" fill="{accent_color}" fill-opacity="0.15" stroke="{accent_color}" stroke-opacity="0.3" stroke-width="1" />
-  <text x="28" y="35" fill="{accent_color}" font-family="system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="0.5">{category.upper()}</text>
-  <text x="380" y="35" text-anchor="end" fill="rgba(255,255,255,0.4)" font-family="system-ui, sans-serif" font-size="9" font-weight="600" letter-spacing="1">AGRIVISION AI</text>
-  <text x="200" y="180" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="700">{label_clean}</text>
-  <text x="200" y="208" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="system-ui, sans-serif" font-size="11">Verified Evidence Catalog Reference</text>
-  <line x1="30" y1="235" x2="370" y2="235" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-  <text x="200" y="260" text-anchor="middle" fill="{accent_color}" font-family="system-ui, sans-serif" font-size="11" font-weight="600">🌿 RAG Knowledge Verified</text>
-</svg>"""
-
-
 @app.route('/api/dataset-image/<path:image_path>', methods=['GET'])
 def get_dataset_image(image_path: str):
     """
-    Streams dataset images safely from bundled static dataset_images,
-    local storage, or redirects to high-resolution photography.
+    Streams dataset images safely from the Agriculture Dataset directory.
     """
     try:
-        # 1. Check in bundled static dataset_images
-        static_img_dir = (BASE_DIR / "frontend" / "static" / "dataset_images").resolve()
-        target_static = (static_img_dir / image_path).resolve()
-        if str(target_static).startswith(str(static_img_dir)) and target_static.exists():
-            return send_from_directory(target_static.parent, target_static.name)
-
-        # 2. Check in original dataset directory
         dataset_dir = Path(AGRICULTURE_DATASET_PATH).resolve()
         target_file = (dataset_dir / image_path).resolve()
-        if str(target_file).startswith(str(dataset_dir)) and target_file.exists():
-            return send_from_directory(target_file.parent, target_file.name)
-
-        # 3. On Vercel / serverless: match against curated high-resolution photography
-        from backend.rag.image_retriever import CURATED_AGRI_PHOTOS
-        from flask import redirect, Response
-
-        lower_path = image_path.lower()
-        for key, photos in CURATED_AGRI_PHOTOS.items():
-            if key in lower_path and photos:
-                return redirect(photos[0]["url"], code=302)
-
-        svg_card = generate_specimen_svg(image_path)
-        return Response(svg_card, mimetype='image/svg+xml')
+        
+        # Security check: ensure target file is within dataset_dir
+        if not str(target_file).startswith(str(dataset_dir)) or not target_file.exists():
+            return jsonify({"error": "Image not found"}), 404
+            
+        return send_from_directory(target_file.parent, target_file.name)
     except Exception as e:
         app.logger.error(f"Image delivery error: {e}")
-        from flask import Response
-        svg_card = generate_specimen_svg(image_path)
-        return Response(svg_card, mimetype='image/svg+xml')
+        return jsonify({"error": "Could not load image"}), 500
 
 
 # ============================================================================

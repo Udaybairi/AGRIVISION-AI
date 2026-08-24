@@ -482,7 +482,7 @@ function initChatModule() {
       const imgCards = visualList.map(img => `
         <div class="visual-card" onclick="openImageModal('${img.image_url}', '${escapeHtml(img.label)}')">
           <div class="visual-img-wrap">
-            <img src="${img.image_url}" alt="${escapeHtml(img.label)}" loading="lazy" onerror="this.onerror=null; this.src='/static/images/hero_landscape.jpg';" />
+            <img src="${img.image_url}" alt="${escapeHtml(img.label)}" loading="lazy" />
           </div>
           <div class="visual-card-info">
             <span class="visual-tag">${escapeHtml(img.category || 'Reference')}</span>
