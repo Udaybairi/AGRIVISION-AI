@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGRIVISION AI — AI-Powered Agriculture Intelligence</title>
+  <meta name="description" content="AGRIVISION AI: Clean, premium agricultural intelligence platform combining Computer Vision, Machine Learning, and Advanced RAG for evidence-based decisions.">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/static/css/main.css">
+  
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- =========================================================================
+       Compact Floating Navigation Bar
+       ========================================================================= -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="logo-text">AGRIVISION <span>AI</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#smart-farm" class="nav-link">Smart Farm 3D</a></li>
+        <li><a href="#module-crop" class="nav-link">AI Crop</a></li>
+        <li><a href="#module-fertilizer" class="nav-link">Fertilizer</a></li>
+        <li><a href="#module-disease" class="nav-link">Plant Doctor</a></li>
+        <li><a href="#module-pest" class="nav-link">Pest AI</a></li>
+        <li><a href="#module-chat" class="nav-link">Agronomy Chat</a></li>
+        <li><a href="#observability" class="nav-link">RAG Engine</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#module-chat" class="btn btn-primary">
+          <span class="ai-spark-icon">✨</span>
+          <span>Ask AI Agronomist</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- =========================================================================
+       Main Hero Section (Clean, Spacious, Subtle 3D)
+       ========================================================================= -->
+  <header id="hero" class="hero-section">
+    <canvas id="hero-3d-canvas"></canvas>
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="badge-tag">
+          <span class="pulse-dot"></span>
+          <span>Evidence-Based Farming Intelligence</span>
+        </div>
+
+        <h1 class="hero-title">
+          AI-Powered <br>
+          <span class="gradient-text">Agriculture Intelligence</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Understand your crops. Detect problems. Make smarter farming decisions with deep learning diagnostics and verified agronomic knowledge.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#module-chat" class="btn btn-primary">
+            <span class="ai-spark-icon">✨</span>
+            <span>Ask AI Agronomist</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#smart-farm" class="btn btn-secondary">
+            <span>Explore Smart Farm</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
+
+        <div class="hero-stats-bar">
+          <div class="hero-stat-item">
+            <h4>650+</h4>
+            <p>Verified Chunks</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>56.7K</h4>
+            <p>Visual References</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>38</h4>
+            <p>Disease Classes</p>
+          </div>
+          <div class="hero-stat-item">
+            <h4>100%</h4>
+            <p>Citation Grounding</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- =========================================================================
+       Platform Feature Cards Overview Grid (Clean 3D SaaS Hub)
+       ========================================================================= -->
+  <section class="container features-section">
+    <div class="feature-cards-grid">
+
+      <!-- Card 1: Smart Farm 3D -->
+      <a href="#smart-farm" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">🌐</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">Smart Farm 3D</h3>
+          <p class="feature-card-desc">Interactive 3D digital twin of agricultural fields with real-time agronomic telemetry.</p>
+        </div>
+      </a>
+
+      <!-- Card 2: AI Crop -->
+      <a href="#module-crop" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">🌱</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">AI Crop</h3>
+          <p class="feature-card-desc">Machine learning crop suitability predictions based on soil N-P-K and climate factors.</p>
+        </div>
+      </a>
+
+      <!-- Card 3: Fertilizer -->
+      <a href="#module-fertilizer" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">🧪</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">Fertilizer Advisor</h3>
+          <p class="feature-card-desc">Soil health diagnosis, nutrient deficit calculation, and organic amendments.</p>
+        </div>
+      </a>
+
+      <!-- Card 4: Plant Doctor -->
+      <a href="#module-disease" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">🔬</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">Plant Doctor</h3>
+          <p class="feature-card-desc">Deep learning computer vision diagnosing 38 plant leaf disease conditions.</p>
+        </div>
+      </a>
+
+      <!-- Card 5: Pest AI -->
+      <a href="#module-pest" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">🐛</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">Pest AI</h3>
+          <p class="feature-card-desc">Integrated Pest Management (IPM) sentinel with biological and cultural controls.</p>
+        </div>
+      </a>
+
+      <!-- Card 6: Agronomy Chat -->
+      <a href="#module-chat" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">💬</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">Agronomy Chat</h3>
+          <p class="feature-card-desc">Evidence-grounded conversational AI answering farmers' questions in natural language.</p>
+        </div>
+      </a>
+
+      <!-- Card 7: RAG Engine -->
+      <a href="#observability" class="feature-card">
+        <div>
+          <div class="feature-card-header">
+            <div class="feature-card-icon">📚</div>
+            <span class="feature-card-arrow">→</span>
+          </div>
+          <h3 class="feature-card-title">RAG Engine</h3>
+          <p class="feature-card-desc">Hybrid BM25 and dense vector search pipeline with verifiable research citations.</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       Interactive 3D Smart Farm Section
+       ========================================================================= -->
+  <section id="smart-farm" class="smart-farm-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-tag">
+          <span>Interactive 3D Digital Twin</span>
+        </div>
+        <h2 class="section-title">Explore the <span class="gradient-emerald">3D Smart Farm</span></h2>
+        <p class="section-desc">Rotate the virtual farm and click on any agricultural hub to launch real-time AI diagnosis and advisory pipelines.</p>
+      </div>
+
+      <div class="farm-3d-wrapper">
+        <div class="farm-controls-overlay">
+          <button class="farm-hotspot-btn active" data-target="module-crop">🌱 Crop Field</button>
+          <button class="farm-hotspot-btn" data-target="module-fertilizer">🧪 Fertilizer Depot</button>
+          <button class="farm-hotspot-btn" data-target="module-disease">🔬 Plant Doctor Lab</button>
+          <button class="farm-hotspot-btn" data-target="module-pest">🐛 Pest Scouting</button>
+          <button class="farm-hotspot-btn" data-target="module-chat">💬 Agronomy RAG Core</button>
+        </div>
+
+        <canvas id="smart-farm-canvas"></canvas>
+
+        <div class="farm-legend-overlay">
+          <span>💡 Click & Drag to Orbit • Click any floating hub to open AI tools</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       Platform AI Modules (Crop, Fertilizer, Disease, Pest)
+       ========================================================================= -->
+  <section class="container" style="padding: 20px 24px 60px 24px;">
+
+    <!-- Module 1: AI Crop Recommendation -->
+    <div id="module-crop" class="glass-card">
+      <div class="card-icon-header">🌱</div>
+      <h3 class="card-title">AI Crop Recommendation Engine</h3>
+      <p class="card-desc">Machine learning model predicting optimal crop varieties based on soil nutrients and climatic parameters.</p>
+
+      <form id="crop-form">
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label" for="crop-n">Nitrogen (N) [mg/kg]</label>
+            <input type="number" id="crop-n" class="form-control" value="90" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="crop-p">Phosphorus (P) [mg/kg]</label>
+            <input type="number" id="crop-p" class="form-control" value="42" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="crop-k">Potassium (K) [mg/kg]</label>
+            <input type="number" id="crop-k" class="form-control" value="43" required>
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label" for="crop-temp">Temperature (°C)</label>
+            <input type="number" step="0.1" id="crop-temp" class="form-control" value="26.5" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="crop-humidity">Humidity (%)</label>
+            <input type="number" step="0.1" id="crop-humidity" class="form-control" value="82.0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="crop-ph">Soil pH</label>
+            <input type="number" step="0.1" id="crop-ph" class="form-control" value="6.5" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="crop-rain">Rainfall (mm)</label>
+            <input type="number" step="0.1" id="crop-rain" class="form-control" value="202.0" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="crop-city">City / Region (Optional Live Weather)</label>
+            <input type="text" id="crop-city" class="form-control" placeholder="e.g. Hyderabad, Pune">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span>🌱 Get Crop Recommendation</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <div id="crop-result-box" class="result-box">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <div>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Top Recommended Crop</span>
+            <h3 id="crop-primary-name" style="color: var(--emerald-light); font-size: 1.8rem;">Rice</h3>
+          </div>
+          <span id="crop-confidence-val" class="result-badge success">96% Confidence</span>
+        </div>
+
+        <p id="crop-profile-desc" style="color: var(--text-secondary); margin-bottom: 16px;"></p>
+
+        <div class="form-grid-3" style="margin-bottom: 16px; font-size: 0.88rem;">
+          <div><strong>Growing Period:</strong> <span id="crop-growing-period" style="color: var(--emerald-light);"></span></div>
+          <div><strong>Optimal Temp:</strong> <span id="crop-opt-temp" style="color: var(--emerald-light);"></span></div>
+          <div><strong>Optimal Rain:</strong> <span id="crop-opt-rain" style="color: var(--emerald-light);"></span></div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <strong style="font-size: 0.85rem; color: var(--text-secondary);">Alternative Crop Matches:</strong>
+          <div id="crop-alternatives-list" style="display: flex; gap: 8px; margin-top: 6px;"></div>
+        </div>
+
+        <div id="crop-citations-box" style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 12px;"></div>
+      </div>
+    </div>
+
+
+    <!-- Module 2: AI Fertilizer Advisor -->
+    <div id="module-fertilizer" class="glass-card">
+      <div class="card-icon-header">🧪</div>
+      <h3 class="card-title">AI Fertilizer & Soil Health Advisor</h3>
+      <p class="card-desc">Diagnose nutrient imbalances, identify deficits/toxicities, and receive evidence-based application schedules.</p>
+
+      <form id="fert-form">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="fert-crop">Target Crop</label>
+            <select id="fert-crop" class="form-control">
+              <option value="Rice" selected>Rice</option>
+              <option value="Maize">Maize</option>
+              <option value="Cotton">Cotton</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Tomato">Tomato</option>
+              <option value="Potato">Potato</option>
+              <option value="Chickpea">Chickpea</option>
+              <option value="Banana">Banana</option>
+              <option value="Coffee">Coffee</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fert-soil">Soil Texture / Type</label>
+            <select id="fert-soil" class="form-control">
+              <option value="Loamy" selected>Loamy Soil</option>
+              <option value="Clayey">Clayey Soil</option>
+              <option value="Sandy">Sandy Loam</option>
+              <option value="Black">Black Soil (Regur)</option>
+              <option value="Red">Red / Lateritic Soil</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label class="form-label" for="fert-n">Current Soil Nitrogen (N)</label>
+            <input type="number" id="fert-n" class="form-control" value="25" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fert-p">Current Soil Phosphorus (P)</label>
+            <input type="number" id="fert-p" class="form-control" value="50" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fert-k">Current Soil Potassium (K)</label>
+            <input type="number" id="fert-k" class="form-control" value="35" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="fert-ph">Soil pH (Optional)</label>
+          <input type="number" step="0.1" id="fert-ph" class="form-control" placeholder="6.5">
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span>🧪 Analyze Soil Nutrients</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <div id="fert-result-box" class="result-box">
+        <h4 id="fert-status-title" style="color: var(--amber-warning); font-size: 1.4rem; margin-bottom: 8px;"></h4>
+        
+        <div class="form-grid-3" style="margin-bottom: 16px; font-size: 0.85rem; background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-sm);">
+          <div id="fert-n-stat"></div>
+          <div id="fert-p-stat"></div>
+          <div id="fert-k-stat"></div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--text-primary);">Observed Symptoms:</strong>
+          <p id="fert-symptoms-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--emerald-light);">Recommended Action:</strong>
+          <p id="fert-action-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--cyan-accent);">Organic Alternative:</strong>
+          <p id="fert-organic-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div id="fert-citations-box" style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 12px;"></div>
+      </div>
+    </div>
+
+
+    <!-- Module 3: Plant Doctor (Leaf Disease AI) -->
+    <div id="module-disease" class="glass-card">
+      <div class="card-icon-header">🔬</div>
+      <h3 class="card-title">Plant Doctor — Vision Disease Diagnosis</h3>
+      <p class="card-desc">Upload a clear leaf photograph to diagnose crop diseases with PyTorch ResNet9 deep learning and grounded RAG management protocols.</p>
+
+      <div id="disease-dropzone" class="dropzone">
+        <div class="dropzone-icon">📷</div>
+        <div class="dropzone-text">Drag & Drop Plant Leaf Photo Here</div>
+        <div class="dropzone-sub">Supports PNG, JPG, JPEG, WEBP formats</div>
+        <button type="button" class="btn btn-upload" onclick="document.getElementById('disease-file-input').click()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          <span>Browse & Upload Plant Photo</span>
+        </button>
+        <input type="file" id="disease-file-input" accept="image/*" style="display: none;">
+      </div>
+
+      <div id="disease-preview-box" class="image-preview-box">
+        <img id="disease-preview-img" alt="Leaf Preview">
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button id="disease-analyze-btn" class="btn btn-cyan" style="display: none;">
+          <span>🔬 Diagnose Crop Health</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div id="disease-result-box" class="result-box">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <h3 id="disease-name-title" style="color: var(--emerald-light); font-size: 1.6rem;"></h3>
+          <span id="disease-confidence-badge" class="result-badge success"></span>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--text-primary);">Diagnostic Symptoms:</strong>
+          <p id="disease-symptoms-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--amber-warning);">Scientific Cause:</strong>
+          <p id="disease-cause-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--emerald-light);">Evidence-Based Management:</strong>
+          <p id="disease-mgmt-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--cyan-accent);">Prevention:</strong>
+          <p id="disease-prev-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <strong style="font-size: 0.85rem; color: var(--text-secondary);">Top Model Candidates:</strong>
+          <div id="disease-candidates-list" style="display: flex; gap: 8px; margin-top: 6px;"></div>
+        </div>
+
+        <div id="disease-citations-box" style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 12px;"></div>
+      </div>
+    </div>
+
+
+    <!-- Module 4: Pest AI -->
+    <div id="module-pest" class="glass-card">
+      <div class="card-icon-header">🐛</div>
+      <h3 class="card-title">Pest AI — Integrated Pest Management (IPM) Sentinel</h3>
+      <p class="card-desc">Identify crop pests by name or symptom description and retrieve biological, cultural, and registered chemical controls.</p>
+
+      <form id="pest-form">
+        <div class="form-group">
+          <label class="form-label" for="pest-query-input">Describe Pest Observations or Enter Pest Name</label>
+          <input type="text" id="pest-query-input" class="form-control" placeholder="e.g. whitefly on cotton with sticky leaves, stem borer dead heart, red spider mite" value="whitefly on cotton" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span>🐛 Identify Pest & IPM Solutions</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <div id="pest-result-box" class="result-box">
+        <h3 id="pest-name-title" style="color: var(--rose-danger); font-size: 1.5rem; margin-bottom: 4px;"></h3>
+        <p id="pest-scientific-name" style="font-style: italic; color: var(--text-muted); margin-bottom: 8px;"></p>
+        <p id="pest-crops-affected" style="color: var(--text-secondary); margin-bottom: 12px; font-weight: 600;"></p>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--text-primary);">Observed Damage / Symptoms:</strong>
+          <p id="pest-symptoms-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--emerald-light);">Cultural & Physical Control:</strong>
+          <p id="pest-cultural-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--cyan-accent);">Biological Predators:</strong>
+          <p id="pest-bio-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <strong style="color: var(--amber-warning);">Chemical Safeguards:</strong>
+          <p id="pest-chem-text" style="color: var(--text-secondary);"></p>
+        </div>
+
+        <div id="pest-citations-box" style="margin-top: 16px; border-top: 1px solid var(--border-subtle); padding-top: 12px;"></div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       Conversational Agriculture Assistant (RAG Chat)
+       ========================================================================= -->
+  <section id="module-chat" class="chat-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-tag">
+          <span>Production RAG Architecture</span>
+        </div>
+        <h2 class="section-title">Ask the <span class="gradient-emerald">AgriMind AI</span></h2>
+        <p class="section-desc">Type your questions naturally in plain farmer language. Our Query Rewriter translates colloquial queries into agronomic searches with source grounding.</p>
+      </div>
+
+      <div class="chat-wrapper">
+        <div class="chat-header">
+          <div class="chat-title-group">
+            <div class="logo-icon" style="width: 32px; height: 32px;">🌿</div>
+            <div>
+              <div style="font-weight: 700; font-size: 1.05rem;">AgriMind Agricultural Assistant</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">Empirical RAG • 650+ Verified Documents • 56.7K Images</div>
+            </div>
+          </div>
+          <span class="chat-status-pill">● System Online</span>
+        </div>
+
+        <div id="chat-messages" class="chat-messages-container">
+          <div class="chat-message assistant">
+            <div class="message-avatar">🌿</div>
+            <div class="message-bubble">
+              <h4 style="color: var(--emerald-light); margin-bottom: 8px;">Welcome to AgriMind!</h4>
+              <p>I am your evidence-grounded agronomic assistant. Ask me anything about crop cultivation, soil nutrient imbalances, plant diseases, or pest IPM.</p>
+              <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-secondary);">
+                <strong>Sample queries you can try (click to test):</strong>
+                <ul style="margin: 6px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                  <li><a href="javascript:void(0)" onclick="quickFillChat('tomato leaf black what medicine')" style="color: var(--emerald-light); text-decoration: underline; cursor: pointer;">"tomato leaf black what medicine"</a> (Query Rewriting & Early Blight diagnosis)</li>
+                  <li><a href="javascript:void(0)" onclick="quickFillChat('rice yellow leaves fertilizer?')" style="color: var(--emerald-light); text-decoration: underline; cursor: pointer;">"rice yellow leaves fertilizer?"</a> (Nitrogen/Khaira deficiency RAG)</li>
+                  <li><a href="javascript:void(0)" onclick="quickFillChat('cotton pest spray')" style="color: var(--emerald-light); text-decoration: underline; cursor: pointer;">"cotton pest spray"</a> (Integrated Pest Management)</li>
+                  <li><a href="javascript:void(0)" onclick="quickFillChat('groundnut leaves spots')" style="color: var(--emerald-light); text-decoration: underline; cursor: pointer;">"groundnut leaves spots"</a> (Tikka disease protocol)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="chat-form" class="chat-input-bar">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Ask any farming question (e.g., tomato leaf black what medicine)..." autocomplete="off" required>
+          <button type="submit" class="btn btn-primary">
+            <span class="ai-spark-icon">✨</span>
+            <span>Ask AgriMind</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       RAG Observability & Architecture Visualizer (Developer Panel)
+       ========================================================================= -->
+  <section id="observability" class="observability-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge-tag">
+          <span>RAG Observability & Trace Pipeline</span>
+        </div>
+        <h2 class="section-title">From Farmer Question to <span class="gradient-text">Evidence-Based Answer</span></h2>
+        <p class="section-desc">Transparent architecture demonstration: Inspect how colloquial farmer language is rewritten, expanded, and retrieved across dense and sparse indexes.</p>
+      </div>
+
+      <div class="rag-flow-container">
+        <div class="rag-node active">
+          <div class="rag-node-title">1. Raw Query</div>
+          <div class="rag-node-sub">Farmer Input</div>
+        </div>
+        <div class="rag-arrow">→</div>
+        <div class="rag-node active">
+          <div class="rag-node-title">2. Query Rewriter</div>
+          <div class="rag-node-sub">Colloquial → Agro</div>
+        </div>
+        <div class="rag-arrow">→</div>
+        <div class="rag-node active">
+          <div class="rag-node-title">3. Multi-Query</div>
+          <div class="rag-node-sub">Expansion & HyDE</div>
+        </div>
+        <div class="rag-arrow">→</div>
+        <div class="rag-node active">
+          <div class="rag-node-title">4. Hybrid Search</div>
+          <div class="rag-node-sub">BM25 + Dense Vector</div>
+        </div>
+        <div class="rag-arrow">→</div>
+        <div class="rag-node active">
+          <div class="rag-node-title">5. Reranker</div>
+          <div class="rag-node-sub">Cross-Encoder (Top-6)</div>
+        </div>
+        <div class="rag-arrow">→</div>
+        <div class="rag-node active">
+          <div class="rag-node-title">6. Grounded LLM</div>
+          <div class="rag-node-sub">Citations [1][2]</div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+          <input type="text" id="obs-query-input" class="form-control" value="tomato leaf black what medicine">
+          <button id="obs-run-btn" class="btn btn-cyan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Run Pipeline Trace</span>
+          </button>
+        </div>
+
+        <div class="form-grid-2" style="font-size: 0.9rem;">
+          <div>
+            <div style="color: var(--text-muted); font-size: 0.8rem;">ORIGINAL QUERY:</div>
+            <div id="obs-raw-q" style="font-weight: 600; margin-bottom: 10px;">tomato leaf black what medicine</div>
+
+            <div style="color: var(--text-muted); font-size: 0.8rem;">AGRONOMIC REWRITTEN FORMULATION:</div>
+            <div id="obs-rewrite-q" style="color: var(--emerald-light); font-weight: 600; margin-bottom: 10px;">What disease may cause black lesions on tomato leaves, and what evidence-based management or treatment options are recommended?</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted); font-size: 0.8rem;">INTENT ROUTING CATEGORY:</div>
+            <div id="obs-category" style="color: var(--cyan-accent); font-weight: 600; margin-bottom: 10px;">Disease Management</div>
+
+            <div style="color: var(--text-muted); font-size: 0.8rem;">EXECUTION LATENCY:</div>
+            <div id="obs-latency" style="color: var(--emerald-light); font-weight: 600; margin-bottom: 10px;">8.2 ms</div>
+
+            <div style="color: var(--text-muted); font-size: 0.8rem;">ANSWER GROUNDING CONFIDENCE:</div>
+            <div id="obs-grounding" style="color: var(--amber-warning); font-weight: 600;">Strong (95%)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       Footer
+       ========================================================================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="logo-icon" style="width: 32px; height: 32px;">🌿</div>
+            <div class="logo-text" style="font-size: 1.1rem;">AGRIVISION <span>AI</span></div>
+          </div>
+          <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-secondary);">"Understand your crops. Detect problems. Make smarter farming decisions."</p>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">
+            A production AI agriculture intelligence platform combining Computer Vision, Machine Learning, and Advanced RAG.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platform Modules</h5>
+          <ul class="footer-links">
+            <li><a href="#module-crop">AI Crop Recommendation</a></li>
+            <li><a href="#module-fertilizer">Fertilizer Advisor</a></li>
+            <li><a href="#module-disease">Plant Doctor Lab</a></li>
+            <li><a href="#module-pest">Pest AI Sentinel</a></li>
+            <li><a href="#module-chat">Agronomy Chatbot</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Core Technologies</h5>
+          <ul class="footer-links">
+            <li><a href="#observability">PyTorch ResNet9</a></li>
+            <li><a href="#observability">Scikit-Learn ML</a></li>
+            <li><a href="#observability">Hybrid Search (BM25 + Dense)</a></li>
+            <li><a href="#observability">Cross-Encoder Reranking</a></li>
+            <li><a href="#smart-farm">Three.js 3D WebGL</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Attribution & Credits</h5>
+          <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+            Derived from and substantially extended from the open-source <a href="https://github.com/Gladiator07/Harvestify" target="_blank" style="color: var(--emerald-primary); text-decoration: underline;">Harvestify</a> project.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 AGRIVISION AI. All rights reserved.</div>
+        <div>Engineered for evidence-based sustainable agriculture.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main Application JavaScript -->
+  <script src="/static/js/three_scene.js"></script>
+  <script src="/static/js/smart_farm_3d.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
