@@ -28,14 +28,10 @@ AGRICULTURE_DATASET_PATH = Path(
 DATA_DIR = BASE_DIR / "data"
 MODELS_DIR = DATA_DIR / "models"
 PROCESSED_DIR = DATA_DIR / "processed"
+VECTOR_STORE_DIR = DATA_DIR / "vector_store"
 
-# Vector store and audio cache: use /tmp on Vercel/serverless environments
-if IS_VERCEL:
-    VECTOR_STORE_DIR = Path("/tmp/vector_store")
-    AUDIO_CACHE_DIR = Path("/tmp/audio_cache")
-else:
-    VECTOR_STORE_DIR = DATA_DIR / "vector_store"
-    AUDIO_CACHE_DIR = DATA_DIR / "audio_cache"
+# Audio cache: use /tmp on Vercel/serverless environments
+AUDIO_CACHE_DIR = Path("/tmp/audio_cache") if IS_VERCEL else DATA_DIR / "audio_cache"
 
 # Safe directory creation
 for directory in [VECTOR_STORE_DIR, AUDIO_CACHE_DIR]:

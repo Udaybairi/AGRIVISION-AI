@@ -5,6 +5,5 @@ scripts/
 .pytest_cache/
 *.ipynb
 data/audio_cache/
-data/vector_store/
 .git/
 .vscode/
